@@ -8,11 +8,12 @@ import (
 var DB *gorm.DB
 
 func ConnectDatabase() {
-	db, err := gorm.Open(mysql.Open("root:@tcp(localhost:3306)/go_restapi_fiber"))
+	db, err := gorm.Open(mysql.Open("root:@tcp(localhost:3306)/restapi"))
 	if err != nil {
 		panic(err)
 	}
 
 	db.AutoMigrate(&Book{})
+	db.AutoMigrate(&User{})
 	DB = db
 }
