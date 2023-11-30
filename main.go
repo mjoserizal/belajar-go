@@ -14,13 +14,13 @@ func main() {
 	app := fiber.New()
 
 	api := app.Group("/api")
-	book := api.Group("/v1/books")
+	book := api.Group("/v1/posts")
 
-	book.Get("/", bookcontroller.Index)
-	book.Get("/:id", bookcontroller.Show)
-	book.Post("/", bookcontroller.Create)
-	book.Put("/:id", bookcontroller.Update)
-	book.Delete("/:id", bookcontroller.Delete)
+	book.Get("/", postcontroller.Index)
+	book.Get("/:id", postcontroller.Show)
+	book.Post("/", postcontroller.Create)
+	book.Put("/:id", postcontroller.Update)
+	book.Delete("/:id", postcontroller.Delete)
 
 	auth := api.Group("/v1")
 	auth.Get("/", authcontroller.Index)

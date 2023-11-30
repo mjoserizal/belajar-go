@@ -3,24 +3,10 @@
   <component name="GoORMHelperCache">
     <option name="schemaMapping">
       <map>
-        <entry key="Book">
+        <entry key="Post">
           <value>
             <set>
-              <option value="file://$PROJECT_DIR$/models/book.go" />
-            </set>
-          </value>
-        </entry>
-        <entry key="Config">
-          <value>
-            <set>
-              <option value="file://$USER_HOME$/go/pkg/mod/gorm.io/gorm@v1.25.5/gorm.go" />
-            </set>
-          </value>
-        </entry>
-        <entry key="DB">
-          <value>
-            <set>
-              <option value="file://$USER_HOME$/go/pkg/mod/gorm.io/gorm@v1.25.5/gorm.go" />
+              <option value="file://$PROJECT_DIR$/models/post.go" />
             </set>
           </value>
         </entry>
@@ -28,13 +14,6 @@
           <value>
             <set>
               <option value="file://$PROJECT_DIR$/models/user.go" />
-            </set>
-          </value>
-        </entry>
-        <entry key="Session">
-          <value>
-            <set>
-              <option value="file://$USER_HOME$/go/pkg/mod/gorm.io/gorm@v1.25.5/gorm.go" />
             </set>
           </value>
         </entry>
@@ -56,34 +35,6 @@
     </option>
     <option name="scannedPathMapping">
       <map>
-        <entry key="file://$USER_HOME$/go/pkg/mod/gorm.io/gorm@v1.25.5/gorm.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1701096015476" />
-              <option name="schema">
-                <list>
-                  <option value="Config" />
-                  <option value="DB" />
-                  <option value="Session" />
-                </list>
-              </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/authcontroller/authcontroller.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1701068255930" />
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/bookcontroller/bookcontroller.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1701065879521" />
-            </ScannedPath>
-          </value>
-        </entry>
         <entry key="file://$PROJECT_DIR$/controllers/authcontroller/authcontroller.go">
           <value>
             <ScannedPath>
@@ -96,43 +47,36 @@
             </ScannedPath>
           </value>
         </entry>
+        <entry key="file://$PROJECT_DIR$/controllers/bookcontroller/postcontroller.go">
+          <value>
+            <ScannedPath>
+              <option name="lastModified" value="1701309218690" />
+            </ScannedPath>
+          </value>
+        </entry>
         <entry key="file://$PROJECT_DIR$/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701138903851" />
+              <option name="lastModified" value="1701309230819" />
             </ScannedPath>
           </value>
         </entry>
-        <entry key="file://$PROJECT_DIR$/middleware/jwt.go">
+        <entry key="file://$PROJECT_DIR$/models/post.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701070428887" />
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/models/book.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1701065869869" />
+              <option name="lastModified" value="1701310354824" />
               <option name="schema">
                 <list>
-                  <option value="Book" />
+                  <option value="Post" />
                 </list>
               </option>
-            </ScannedPath>
-          </value>
-        </entry>
-        <entry key="file://$PROJECT_DIR$/models/seed.go">
-          <value>
-            <ScannedPath>
-              <option name="lastModified" value="1701096550980" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/models/setup.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701068733546" />
+              <option name="lastModified" value="1701163361026" />
             </ScannedPath>
           </value>
         </entry>
@@ -160,15 +104,12 @@
     </option>
     <option name="tableStructMapping">
       <map>
-        <entry key="book" value="Book" />
-        <entry key="config" value="Config" />
-        <entry key="db" value="DB" />
+        <entry key="post" value="Post" />
         <entry key="response" value="Response" />
-        <entry key="session" value="Session" />
         <entry key="user" value="User" />
         <entry key="user_info" value="UserInfo" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1701062421296" />
+    <option name="lastTimeChecked" value="1701308949980" />
   </component>
 </project>

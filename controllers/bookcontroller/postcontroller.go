@@ -1,4 +1,4 @@
-package bookcontroller
+package postcontroller
 
 import (
 	"net/http"
@@ -9,17 +9,17 @@ import (
 )
 
 func Index(c *fiber.Ctx) error {
-	var books []models.Book
-	models.DB.Find(&books)
+	var posts []models.Post
+	models.DB.Find(&posts)
 
-	return c.JSON(books)
+	return c.JSON(posts)
 }
 
 func Show(c *fiber.Ctx) error {
 
 	id := c.Params("id")
-	var book models.Book
-	if err := models.DB.First(&book, id).Error; err != nil {
+	var posts models.Post
+	if err := models.DB.First(&posts, id).Error; err != nil {
 		if err == gorm.ErrRecordNotFound {
 			return c.Status(http.StatusNotFound).JSON(fiber.Map{
 				"message": "Data tidak ditemukan",
@@ -31,39 +31,39 @@ func Show(c *fiber.Ctx) error {
 		})
 	}
 
-	return c.JSON(book)
+	return c.JSON(posts)
 }
 
 func Create(c *fiber.Ctx) error {
 
-	var book models.Book
-	if err := c.BodyParser(&book); err != nil {
+	var posts models.Post
+	if err := c.BodyParser(&posts); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}
 
-	if err := models.DB.Create(&book).Error; err != nil {
+	if err := models.DB.Create(&posts).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}
 
-	return c.JSON(book)
+	return c.JSON(posts)
 }
 
 func Update(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	var book models.Book
-	if err := c.BodyParser(&book); err != nil {
+	var posts models.Post
+	if err := c.BodyParser(&posts); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": err.Error(),
 		})
 	}
 
-	if models.DB.Where("id = ?", id).Updates(&book).RowsAffected == 0 {
+	if models.DB.Where("id = ?", id).Updates(&posts).RowsAffected == 0 {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
 			"message": "Tidak dapat mengupdate data",
 		})
@@ -78,8 +78,8 @@ func Delete(c *fiber.Ctx) error {
 
 	id := c.Params("id")
 
-	var book models.Book
-	if models.DB.Delete(&book, id).RowsAffected == 0 {
+	var posts models.Post
+	if models.DB.Delete(&posts, id).RowsAffected == 0 {
 		return c.Status(http.StatusNotFound).JSON(fiber.Map{
 			"message": "Tidak dapat menghapus data",
 		})
