@@ -18,6 +18,19 @@ import (
 
 // Index handles fetching all users
 func Index(c *fiber.Ctx) error {
+	// Retrieve user information from token
+	userInfo, err := getUserInfoFromToken(c)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
+	}
+
+	// Perform authorized actions based on user role or ID
+	// For example, fetch all users if the user is admin
+	if userInfo.Role != "admin" {
+		return c.Status(fiber.StatusForbidden).JSON(fiber.Map{"message": "Permission denied"})
+	}
+
+	// If authorized, fetch all users
 	var users []models.User
 	models.DB.Find(&users)
 
@@ -134,8 +147,13 @@ func Logout(c *fiber.Ctx) error {
 
 // ChangePassword handles changing the user's password
 func ChangePassword(c *fiber.Ctx) error {
+	// Retrieve user information from token
+	userInfo, err := getUserInfoFromToken(c)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
+	}
+
 	var changePasswordData struct {
-		Username    string `json:"username"`
 		OldPassword string `json:"oldPassword"`
 		NewPassword string `json:"newPassword"`
 	}
@@ -146,20 +164,12 @@ func ChangePassword(c *fiber.Ctx) error {
 
 	// Retrieve the user from the database
 	var user models.User
-	if err := models.DB.Where("username = ?", changePasswordData.Username).First(&user).Error; err != nil {
-		fmt.Println("Error retrieving user from database:", err)
-
-		// Handle the case where the user is not found
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid credentials"})
-		}
-
+	if err := models.DB.Where("id = ?", userInfo.ID).First(&user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to retrieve user"})
 	}
 
 	// Compare the hashed old password with the provided old password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(changePasswordData.OldPassword)); err != nil {
-		fmt.Println("Error comparing passwords:", err)
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Invalid credentials"})
 	}
 
@@ -182,7 +192,7 @@ func DeleteUser(c *fiber.Ctx) error {
 	// Extract user ID from the request parameters
 	id := c.Params("id")
 
-	// Get the user information from the token
+	// Retrieve user information from token
 	userInfo, err := getUserInfoFromToken(c)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
@@ -284,7 +294,7 @@ func UpdateUser(c *fiber.Ctx) error {
 	// Extract user ID from the request parameters
 	id := c.Params("id")
 
-	// Get the user information from the token
+	// Retrieve user information from token
 	userInfo, err := getUserInfoFromToken(c)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
@@ -313,4 +323,57 @@ func UpdateUser(c *fiber.Ctx) error {
 	}
 
 	return c.JSON(fiber.Map{"message": "User data updated successfully"})
+}
+
+// Profile handles fetching user profile
+func Profile(c *fiber.Ctx) error {
+	// Retrieve user information from token
+	userInfo, err := getUserInfoFromToken(c)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
+	}
+
+	// Retrieve the user from the database
+	var user models.User
+	if err := models.DB.Where("id = ?", userInfo.ID).First(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to retrieve user"})
+	}
+
+	// Exclude sensitive information like password before returning
+	user.Password = ""
+
+	return c.JSON(user)
+}
+
+// UpdateProfile handles updating user profile
+func UpdateProfile(c *fiber.Ctx) error {
+	// Retrieve user information from token
+	userInfo, err := getUserInfoFromToken(c)
+	if err != nil {
+		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
+	}
+
+	// Retrieve the user from the database
+	var user models.User
+	if err := models.DB.Where("id = ?", userInfo.ID).First(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to retrieve user"})
+	}
+
+	// Parse and decode the request body into user object
+	var updatedUser models.User
+	if err := c.BodyParser(&updatedUser); err != nil {
+		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Invalid request"})
+	}
+
+	// Update the user's profile information
+	user.Username = updatedUser.Username
+	user.Name = updatedUser.Name
+
+	// Save the updated user profile to the database
+	if err := models.DB.Save(&user).Error; err != nil {
+		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to update profile"})
+	}
+
+	// Return the updated user profile
+	return c.JSON(user)
 }

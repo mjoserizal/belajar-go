@@ -3,12 +3,13 @@
 package models
 
 type User struct {
-	ID       uint   `json:"id"`
+	ID       uint   `gorm:"primaryKey"`
 	Name     string `json:"name"`
 	Email    string `json:"email"`
-	Username string `json:"username"`
+	Username string `gorm:"unique"`
 	Password string `json:"password"`
 	Role     string `json:"role" gorm:"default:user"`
+	Posts    []Post
 }
 type ResponseLogin struct {
 	Name    string `json:"name"`

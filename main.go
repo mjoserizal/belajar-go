@@ -34,5 +34,7 @@ func main() {
 	auth.Put("/changePassword", authcontroller.ChangePassword)
 	auth.Put("/updateUser/:id", authcontroller.UpdateUser)
 	auth.Delete("/deleteUser/:id", authcontroller.DeleteUser)
+	auth.Get("/profile", authcontroller.Profile)
+	auth.Put("/updateProfile", authcontroller.UpdateProfile)
 	app.Listen(":8000")
 }
