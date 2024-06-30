@@ -17,6 +17,20 @@
             </set>
           </value>
         </entry>
+        <entry key="ResponseLogin">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/models/user.go" />
+            </set>
+          </value>
+        </entry>
+        <entry key="ResponseRegister">
+          <value>
+            <set>
+              <option value="file://$PROJECT_DIR$/models/user.go" />
+            </set>
+          </value>
+        </entry>
         <entry key="User">
           <value>
             <set>
@@ -38,7 +52,7 @@
         <entry key="file://$PROJECT_DIR$/controllers/authcontroller/authcontroller.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701139122482" />
+              <option name="lastModified" value="1719745926454" />
               <option name="schema">
                 <list>
                   <option value="UserInfo" />
@@ -50,21 +64,21 @@
         <entry key="file://$PROJECT_DIR$/controllers/bookcontroller/postcontroller.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701309218690" />
+              <option name="lastModified" value="1719746935764" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/main.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701309230819" />
+              <option name="lastModified" value="1701339220192" />
             </ScannedPath>
           </value>
         </entry>
         <entry key="file://$PROJECT_DIR$/models/post.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701310354824" />
+              <option name="lastModified" value="1719747076961" />
               <option name="schema">
                 <list>
                   <option value="Post" />
@@ -83,11 +97,12 @@
         <entry key="file://$PROJECT_DIR$/models/user.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701100238485" />
+              <option name="lastModified" value="1719745908360" />
               <option name="schema">
                 <list>
                   <option value="User" />
-                  <option value="Response" />
+                  <option value="ResponseLogin" />
+                  <option value="ResponseRegister" />
                 </list>
               </option>
             </ScannedPath>
@@ -96,7 +111,7 @@
         <entry key="file://$PROJECT_DIR$/seed/seed.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1701096583034" />
+              <option name="lastModified" value="1719746411333" />
             </ScannedPath>
           </value>
         </entry>
@@ -106,10 +121,12 @@
       <map>
         <entry key="post" value="Post" />
         <entry key="response" value="Response" />
+        <entry key="response_login" value="ResponseLogin" />
+        <entry key="response_register" value="ResponseRegister" />
         <entry key="user" value="User" />
         <entry key="user_info" value="UserInfo" />
       </map>
     </option>
-    <option name="lastTimeChecked" value="1701308949980" />
+    <option name="lastTimeChecked" value="1719738630480" />
   </component>
 </project>

@@ -28,6 +28,7 @@ func Seed(db *gorm.DB) {
 
 	adminUser := models.User{
 		Username: "adminuser",
+		Email:    "admin@gmail.com",
 		Password: string(hashedAdminPassword),
 		Name:     "Admin",
 		Role:     "admin",

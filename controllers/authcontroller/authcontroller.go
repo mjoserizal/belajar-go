@@ -32,6 +32,12 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Invalid request"})
 	}
 
+	// Check if username already exists
+	var existingUser models.User
+	if err := models.DB.Where("username = ?", registerData.Username).First(&existingUser).Error; err == nil {
+		return c.Status(fiber.StatusConflict).JSON(fiber.Map{"message": "Username already taken"})
+	}
+
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(registerData.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to register"})
@@ -40,6 +46,7 @@ func Register(c *fiber.Ctx) error {
 	user := models.User{
 		Username: registerData.Username,
 		Name:     registerData.Name,
+		Email:    registerData.Email,
 		Password: string(hashedPassword),
 		Role:     "user", // Set the default role to "user"
 	}
@@ -48,10 +55,11 @@ func Register(c *fiber.Ctx) error {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to register"})
 	}
 
-	response := models.Response{
+	response := models.ResponseRegister{
 		Message: "User Registered",
 		Success: true,
 		Name:    user.Name,
+		Email:   user.Email,
 	}
 
 	return c.JSON(response)
@@ -63,7 +71,7 @@ func Login(c *fiber.Ctx) error {
 
 	if err := c.BodyParser(&loginData); err != nil {
 		fmt.Println("Error parsing login data:", err)
-		return c.Status(fiber.StatusBadRequest).JSON(models.Response{
+		return c.Status(fiber.StatusBadRequest).JSON(models.ResponseLogin{
 			Message: "Invalid request",
 			Success: false,
 		})
@@ -76,14 +84,14 @@ func Login(c *fiber.Ctx) error {
 
 		// Handle the case where the user is not found
 		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return c.Status(fiber.StatusUnauthorized).JSON(models.Response{
+			return c.Status(fiber.StatusUnauthorized).JSON(models.ResponseLogin{
 				Message: "Invalid credentials",
 				Success: false,
 			})
 		}
 
-		return c.Status(fiber.StatusInternalServerError).JSON(models.Response{
-			Message: "Failed to retrieve user",
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ResponseLogin{
+			Message: "User is not registered",
 			Success: false,
 		})
 	}
@@ -91,7 +99,7 @@ func Login(c *fiber.Ctx) error {
 	// Compare the hashed password with the provided password
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(loginData.Password)); err != nil {
 		fmt.Println("Error comparing passwords:", err)
-		return c.Status(fiber.StatusUnauthorized).JSON(models.Response{
+		return c.Status(fiber.StatusUnauthorized).JSON(models.ResponseLogin{
 			Message: "Invalid credentials",
 			Success: false,
 		})
@@ -101,17 +109,18 @@ func Login(c *fiber.Ctx) error {
 	token, err := generateToken(user.ID, user.Name, user.Role)
 	if err != nil {
 		fmt.Println("Error generating token:", err)
-		return c.Status(fiber.StatusInternalServerError).JSON(models.Response{
+		return c.Status(fiber.StatusInternalServerError).JSON(models.ResponseLogin{
 			Message: "Failed to generate token",
 			Success: false,
 		})
 	}
 
-	return c.JSON(models.Response{
+	return c.JSON(models.ResponseLogin{
 		Message: "Login successful",
 		Success: true,
 		Token:   token,
 		Name:    user.Name,
+		Email:   user.Email,
 		Role:    user.Role, // Include the role in the response
 	})
 }

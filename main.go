@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gofiber/fiber/v2"
+	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/mjoserizal/belajar-go/controllers/authcontroller"
 	"github.com/mjoserizal/belajar-go/controllers/bookcontroller"
 	"github.com/mjoserizal/belajar-go/models"
@@ -11,8 +12,11 @@ import (
 func main() {
 	models.ConnectDatabase()
 	seed.Seed(models.DB)
-	app := fiber.New()
 
+	app := fiber.New()
+	app.Use(cors.New(cors.Config{
+		AllowCredentials: true,
+	}))
 	api := app.Group("/api")
 	book := api.Group("/v1/posts")
 
