@@ -64,7 +64,7 @@
         <entry key="file://$PROJECT_DIR$/controllers/bookcontroller/postcontroller.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1719746935764" />
+              <option name="lastModified" value="1719746939708" />
             </ScannedPath>
           </value>
         </entry>
@@ -78,7 +78,7 @@
         <entry key="file://$PROJECT_DIR$/models/post.go">
           <value>
             <ScannedPath>
-              <option name="lastModified" value="1719747076961" />
+              <option name="lastModified" value="1719768134520" />
               <option name="schema">
                 <list>
                   <option value="Post" />

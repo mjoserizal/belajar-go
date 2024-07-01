@@ -347,33 +347,26 @@ func Profile(c *fiber.Ctx) error {
 
 // UpdateProfile handles updating user profile
 func UpdateProfile(c *fiber.Ctx) error {
-	// Retrieve user information from token
 	userInfo, err := getUserInfoFromToken(c)
 	if err != nil {
 		return c.Status(fiber.StatusUnauthorized).JSON(fiber.Map{"message": "Unauthorized"})
 	}
 
-	// Retrieve the user from the database
 	var user models.User
 	if err := models.DB.Where("id = ?", userInfo.ID).First(&user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to retrieve user"})
 	}
-
-	// Parse and decode the request body into user object
 	var updatedUser models.User
 	if err := c.BodyParser(&updatedUser); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{"message": "Invalid request"})
 	}
 
-	// Update the user's profile information
 	user.Username = updatedUser.Username
 	user.Name = updatedUser.Name
 
-	// Save the updated user profile to the database
 	if err := models.DB.Save(&user).Error; err != nil {
 		return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"message": "Failed to update profile"})
 	}
 
-	// Return the updated user profile
 	return c.JSON(user)
 }
